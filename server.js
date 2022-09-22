@@ -25,9 +25,9 @@ async function startApolloServer(typeDefs, resolvers) {
     res.send("HELLO FROM EXPRESS APOLLO SERVER");
   });
 
-  await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+  await new Promise((resolve) => httpServer.listen({ port: 9020 }, resolve));
   console.log(
-    `🚀 Server ready at http://localhost:4000${server.graphqlPath} 🚀`
+    `🚀 Server ready at http://localhost:9020${server.graphqlPath} 🚀`
   );
 }
 
