@@ -1,34 +1,75 @@
+require("dotenv").config();
+const path = require("path");
 const express = require("express");
-const http = require("http");
-const { ApolloServer } = require("apollo-server-express");
-const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+const bodyParser = require("body-parser");
+const app = express();
+const cors = require("cors");
+const connection = require("./config/db");
+connection();
 
-const typeDefs = require("./src/schema");
-const resolvers = require("./src/resolver");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-async function startApolloServer(typeDefs, resolvers) {
-  const app = express();
-  app.use("/uploads", express.static("src"));
-  //   app.use("/uploads", express.static("src/images"));
+// middlewares
+app.use(express.json());
+app.use(cors());
+app.use("/uploads", express.static("src"));
+app.use("/api/product-express/static", express.static("src"));
+// routes
 
-  const httpServer = http.createServer(app);
+// LOGIN
+app.use(
+  "/api/product-express/signin-admin",
+  require("./routes/signin.admin")
+);
+app.use(
+  "/api/product-express/signin-members",
+  require("./routes/signin.members")
+);
+// Upload File
 
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  });
-  await server.start();
-  server.applyMiddleware({ app, bodyParserConfig: true });
+app.use("/api/product-express/admins", require("./routes/admin"));
+app.use("/api/product-express/members", require("./routes/members"));
 
-  app.use("/api/nba-pos/signin", (req, res) => {
-    res.send("HELLO FROM EXPRESS APOLLO SERVER");
-  });
+// Products
+app.use("/api/product-express/products", require("./routes/product"));
+app.use(
+  "/api/product-express/image/product",
+  require("./routes/image.product")
+);
+// company
+app.use("/api/product-express/company", require("./routes/compony"));
+app.use(
+  "/api/product-express/image/company",
+  require("./routes/image.company")
+);
+// Brand
+app.use("/api/product-express/brand", require("./routes/brand"));
+app.use("/api/product-express/image/brand", require("./routes/image.brand"));
+// Type
+app.use("/api/product-express/type", require("./routes/type"));
+app.use("/api/product-express/image/type", require("./routes/image.type"));
 
-  await new Promise((resolve) => httpServer.listen({ port: 9020 }, resolve));
-  console.log(
-    `🚀 Server ready at http://localhost:9020${server.graphqlPath} 🚀`
-  );
-}
+// Cut Around
+app.use("/api/product-express/cut_around", require("./routes/cut.around"));
+// Partner
+app.use("/api/product-express/partners", require("./routes/partners"));
+app.use(
+  "/api/product-express/image/partners",
+  require("./routes/image.partners")
+);
 
-startApolloServer(typeDefs, resolvers);
+// Pre Orders
+app.use("/api/product-express/pre_orders", require("./routes/pre.orders"));
+// Discount
+app.use("/api/product-express/discount", require("./routes/discount"));
+// Cart Shopping
+app.use(
+  "/api/product-express/cart_shopping",
+  require("./routes/cart.shopping")
+);
+// whitelist
+app.use("/api/product-express/whitelist", require("./routes/whitelist"));
+
+const port = process.env.PORT || 9020;
+app.listen(port, console.log(`Listening on port ${port}...`));
