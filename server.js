@@ -58,6 +58,10 @@ app.use(
   "/api/product-express/image/partners",
   require("./routes/image.partners")
 );
+app.use(
+  "/api/product-express/image2/partners",
+  require("./routes/image2.partners")
+);
 
 // Pre Orders
 app.use("/api/product-express/pre_orders", require("./routes/pre.orders"));
