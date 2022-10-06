@@ -111,6 +111,7 @@ exports.update = async (req, res) => {
 exports.create = async (req, res) => {
   console.log("สร้าง");
   try {
+    console.log(req.body);
     const { error } = validate(req.body);
     if (error)
       return res
