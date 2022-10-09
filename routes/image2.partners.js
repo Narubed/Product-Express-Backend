@@ -3,6 +3,8 @@ const fs = require("fs");
 const router = express.Router();
 const multer = require("multer");
 
+const auth = require("../lib/auth");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "src/images/partners");
@@ -14,7 +16,7 @@ const storage = multer.diskStorage({
 });
 // const upload = multer({ storage: storage });
 
-router.post("/", async function (req, res) {
+router.post("/", auth, async function (req, res) {
   try {
     // console.log(req.file);
     let upload = multer({ storage: storage }).fields([
@@ -31,14 +33,12 @@ router.post("/", async function (req, res) {
         return res.send(err);
       } else {
         console.log("มีไฟล์", req.files);
-        res
-          .status(201)
-          .send({
-            message: "สร้างรูปภาพแล้ว",
-            status: true,
-            cardImage: req.files.partner_card_image[0].filename,
-            bookbankImage: req.files.partner_bookbank_image[0].filename,
-          });
+        res.status(201).send({
+          message: "สร้างรูปภาพแล้ว",
+          status: true,
+          cardImage: req.files.partner_card_image[0].filename,
+          bookbankImage: req.files.partner_bookbank_image[0].filename,
+        });
       }
     });
   } catch (error) {

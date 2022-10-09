@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const po = require("../controllers/pre.order.controller");
 const update_po = require("../controllers/pre.order.controller/update.pre.order");
+const auth = require("../lib/auth");
 
-router.put("/:id", update_po.update);
+router.put("/:id", auth, update_po.update);
 
-router.post("/", po.create);
-router.get("/", po.findAll);
-router.get("/:id", po.findOne);
-router.delete("/:id", po.delete);
+router.post("/", auth, po.create);
+router.get("/", auth, po.findAll);
+router.get("/:id", auth, po.findOne);
+router.delete("/:id", auth, po.delete);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const router = express.Router();
 const multer = require("multer");
+const auth = require("../lib/auth");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/", upload.single("image"), async function (req, res) {
+router.post("/", auth, upload.single("image"), async function (req, res) {
   console.log(req.file);
   if (req.file) {
     res

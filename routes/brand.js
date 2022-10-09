@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const brand = require("../controllers/brand.controller");
+const auth = require("../lib/auth");
 
-router.post("/", brand.create);
 router.get("/", brand.findAll);
 router.get("/:id", brand.findOne);
-router.delete("/:id", brand.delete);
-router.put("/:id", brand.update);
+
+router.post("/", auth, brand.create);
+
+router.delete("/:id", auth, brand.delete);
+router.put("/:id", auth, brand.update);
 
 module.exports = router;
