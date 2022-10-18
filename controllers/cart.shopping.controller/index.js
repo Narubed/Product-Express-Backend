@@ -109,6 +109,9 @@ exports.update = async (req, res) => {
   }
 };
 exports.create = async (req, res) => {
+  const { decoded } = req;
+
+  console.log(decoded);
   console.log("สร้าง");
   try {
     const { error } = validate(req.body);
@@ -119,6 +122,7 @@ exports.create = async (req, res) => {
 
     const result = await new CartShopping({
       ...req.body,
+      shopping_member_id: decoded._id,
     }).save();
     res.status(201).send({
       message: "เพิ่มข้อมูลสำเร็จ",
@@ -127,5 +131,36 @@ exports.create = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
+  }
+};
+
+exports.findByMember = async (req, res) => {
+  const { decoded } = req;
+
+  console.log(decoded);
+  try {
+    CartShopping.findOne({ shopping_member_id: decoded._id })
+      .then((data) => {
+        console.log(data);
+        if (!data)
+          res.status(404).send({
+            message: "ไม่สามารถหารายงานนี้ได้",
+            status: false,
+            create: true,
+          });
+        else res.send({ data, status: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          message: "มีบางอย่างผิดพลาด",
+          status: false,
+        });
+      });
+  } catch (error) {
+    res.status(500).send({
+      message: "มีบางอย่างผิดพลาด",
+      status: false,
+    });
   }
 };

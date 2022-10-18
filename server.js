@@ -18,10 +18,7 @@ app.use("/api/product-express/static", express.static("src"));
 // routes
 
 // LOGIN
-app.use(
-  "/api/product-express/signin-admin",
-  require("./routes/signin.admin")
-);
+app.use("/api/product-express/signin-admin", require("./routes/signin.admin"));
 app.use(
   "/api/product-express/signin-members",
   require("./routes/signin.members")
@@ -74,6 +71,8 @@ app.use(
 );
 // whitelist
 app.use("/api/product-express/whitelist", require("./routes/whitelist"));
+
+app.use("/api/product-express/mailer", require("./routes/mailer"));
 
 const port = process.env.PORT || 9020;
 app.listen(port, console.log(`Listening on port ${port}...`));

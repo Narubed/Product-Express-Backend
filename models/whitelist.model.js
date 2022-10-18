@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const WhiteListSchema = new mongoose.Schema({
-  whitelistmember_id: { type: String, required: false, default: "ไม่มี" },
+  whitelist_member_id: { type: String, required: false, default: "ไม่มี" },
   whitelist_detail: { type: Array, require: false, default: [] },
 });
 

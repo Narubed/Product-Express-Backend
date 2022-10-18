@@ -2,6 +2,7 @@ const router = require("express").Router();
 const CartShopping = require("../controllers/cart.shopping.controller");
 const auth = require("../lib/auth");
 
+router.get("/member/", auth, CartShopping.findByMember);
 router.post("/", auth, CartShopping.create);
 router.get("/", auth, CartShopping.findAll);
 router.get("/:id", auth, CartShopping.findOne);

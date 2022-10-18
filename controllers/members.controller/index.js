@@ -166,3 +166,37 @@ exports.create = async (req, res) => {
     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
   }
 };
+
+exports.findMe = async (req, res) => {
+  const { decoded } = req;
+  try {
+    Members.findOne({ _id: decoded._id })
+      .then((data) => {
+        if (!data) {
+          res
+            .status(404)
+            .send({ message: "ไม่สามารถหาผู้ใช้งานนี้ได้", status: false });
+        } else {
+          const newAdmin = {
+            _id: data._id,
+            members_name: data.members_name,
+            members_email: data.members_email,
+            members_address: data.members_address,
+            members_nationality: data.members_nationality,
+          };
+          res.status(201).send({ user: newAdmin, status: true });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "มีบางอย่างผิดพลาด",
+          status: false,
+        });
+      });
+  } catch (error) {
+    res.status(500).send({
+      message: "มีบางอย่างผิดพลาด",
+      status: false,
+    });
+  }
+};

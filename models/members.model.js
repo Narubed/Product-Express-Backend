@@ -27,7 +27,7 @@ MemberSchema.methods.generateAuthToken = function () {
     { _id: this._id, row: "members" },
     process.env.JWTPRIVATEKEY,
     {
-      expiresIn: "2h",
+      expiresIn: "2d",
     }
   );
   return token;
