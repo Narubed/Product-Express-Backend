@@ -17,8 +17,12 @@ const MemberSchema = new mongoose.Schema({
   members_name: { type: String, required: true }, //ชื่อ
   members_email: { type: String, required: true }, //เมล
   members_password: { type: String, required: true }, //รหัส
+  members_image: { type: String, required: false, default: "ไม่มี" },
   members_phone: { type: String, required: true },
-  members_address: { type: String, required: true },
+  members_address1: { type: String, required: true },
+  members_address2: { type: String, required: false, default: "" },
+  members_city: { type: String, required: false, default: "" },
+  members_zip: { type: String, required: false, default: "" },
   members_nationality: { type: String, required: true }, // eng thai อื่น ๆ กรอกเองได้
   members_date_start: { type: Date, required: false, default: Date.now() }, //เริ่ม
 });
@@ -40,8 +44,12 @@ const validate = (data) => {
     members_name: Joi.string(),
     members_email: Joi.string(),
     members_password: Joi.string(),
+    members_image: Joi.string().default("ไม่มี"),
     members_phone: Joi.string(),
-    members_address: Joi.string(),
+    members_address1: Joi.string(),
+    members_address2: Joi.string().default(""),
+    members_city: Joi.string().default(""),
+    members_zip: Joi.string().default(""),
     members_nationality: Joi.string(),
     members_date_start: Joi.date().raw().default(Date.now()),
   });

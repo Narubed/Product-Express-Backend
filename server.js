@@ -24,6 +24,10 @@ app.use(
   require("./routes/signin.members")
 );
 // Upload File
+app.use(
+  "/api/product-express/image/members",
+  require("./routes/image.members")
+);
 
 app.use("/api/product-express/admins", require("./routes/admin"));
 app.use("/api/product-express/members", require("./routes/members"));
@@ -73,6 +77,9 @@ app.use(
 app.use("/api/product-express/whitelist", require("./routes/whitelist"));
 
 app.use("/api/product-express/mailer", require("./routes/mailer"));
+
+// Invoice
+app.use("/api/product-express/invoice", require("./routes/invoice.tax"));
 
 const port = process.env.PORT || 9020;
 app.listen(port, console.log(`Listening on port ${port}...`));

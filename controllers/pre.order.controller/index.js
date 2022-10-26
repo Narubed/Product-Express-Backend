@@ -74,40 +74,7 @@ exports.delete = async (req, res) => {
     });
   }
 };
-// exports.update = async (req, res) => {
-//   console.log(req.body);
-//   try {
-//     if (!req.body) {
-//       return res.status(400).send({
-//         message: "ส่งข้อมูลผิดพลาด",
-//       });
-//     }
-//     const id = req.params.id;
 
-//     Products.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-//       .then((data) => {
-//         console.log(data);
-//         if (!data) {
-//           res.status(404).send({
-//             message: `ไม่สามารถเเก้ไขข้อมูลนี้ได้`,
-//             status: false,
-//           });
-//         } else
-//           res.send({
-//             message: "แก้ไขข้อมูลนี้เรียบร้อยเเล้ว",
-//             status: true,
-//           });
-//       })
-//       .catch((err) => {
-//         res.status(500).send({
-//           message: "มีบ่างอย่างผิดพลาด",
-//           status: false,
-//         });
-//       });
-//   } catch (error) {
-//     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
-//   }
-// };
 exports.create = async (req, res) => {
   console.log("สร้าง", req.body);
   try {
@@ -125,6 +92,29 @@ exports.create = async (req, res) => {
       status: true,
       PreOrders: result,
     });
+  } catch (error) {
+    res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
+  }
+};
+
+exports.findByIdMembers = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    PreOrders.find({ po_member_id: id })
+      .then((data) => {
+        if (!data)
+          res
+            .status(404)
+            .send({ message: "ไม่สามารถหาผู้ใช้งานนี้ได้", status: false });
+        else res.send({ data, status: true });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "มีบางอย่างผิดพลาด",
+          status: false,
+        });
+      });
   } catch (error) {
     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
   }

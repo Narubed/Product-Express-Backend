@@ -20,6 +20,8 @@ exports.update = async (req, res) => {
   try {
     let upload = multer({ storage: storeage }).single("po_silp");
     upload(req, res, async function (err) {
+      console.log(req.file);
+      console.log(req.body);
       if (!req.file) {
         PreOrders.findByIdAndUpdate(
           id,

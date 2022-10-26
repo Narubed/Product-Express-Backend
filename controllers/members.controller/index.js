@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
 const { Members, validate } = require("../../models/members.model");
+const { decode } = require("punycode");
 
 exports.findAll = async (req, res) => {
   try {
@@ -180,8 +181,14 @@ exports.findMe = async (req, res) => {
           const newAdmin = {
             _id: data._id,
             members_name: data.members_name,
+            members_image: data.members_image,
             members_email: data.members_email,
-            members_address: data.members_address,
+            members_phone: data.members_phone,
+
+            members_address1: data.members_address1,
+            members_address2: data.members_address2,
+            members_city: data.members_city,
+            members_zip: data.members_zip,
             members_nationality: data.members_nationality,
           };
           res.status(201).send({ user: newAdmin, status: true });
@@ -200,3 +207,50 @@ exports.findMe = async (req, res) => {
     });
   }
 };
+
+exports.changePassword = async (req, res) => {
+  const { decoded } = req;
+  try {
+    const plaintextPassword = req.body.password;
+    const result = await Members.findOne({ _id: decoded._id });
+    const password = result.members_password;
+    comparePassword(plaintextPassword, password).then(async (status) => {
+      if (status) {
+        const id = decoded._id;
+        const salt = await bcrypt.genSalt(Number(process.env.SALT));
+        const hashPassword = await bcrypt.hash(req.body.newPassword, salt);
+        Members.findByIdAndUpdate(
+          id,
+          { members_password: hashPassword },
+          { useFindAndModify: false }
+        ).then((data) => {
+          if (!data) {
+            res.status(401).send({
+              message: `can't change password`,
+              status: false,
+            });
+          } else
+            res.status(200).send({
+              message: "change password susscess",
+              status: true,
+            });
+        });
+      } else {
+        res.status(400).send({
+          message: "can't change password",
+          status: false,
+        });
+      }
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "มีบางอย่างผิดพลาด",
+      status: false,
+    });
+  }
+};
+
+async function comparePassword(plaintextPassword, password) {
+  const result = await bcrypt.compare(plaintextPassword, password);
+  return result;
+}
