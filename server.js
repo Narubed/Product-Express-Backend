@@ -20,6 +20,11 @@ app.use("/api/product-express/static", express.static("src"));
 // LOGIN
 app.use("/api/product-express/signin-admin", require("./routes/signin.admin"));
 app.use(
+  "/api/product-express/signin-partners",
+  require("./routes/signin.partners")
+);
+
+app.use(
   "/api/product-express/signin-members",
   require("./routes/signin.members")
 );

@@ -119,3 +119,53 @@ exports.findByIdMembers = async (req, res) => {
     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
   }
 };
+
+exports.findByIdPartner = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    PreOrders.find({
+      po_partner_id: id,
+    })
+      .then((data) => {
+        if (!data)
+          res
+            .status(404)
+            .send({ message: "ไม่สามารถหารายงานนี้ได้", status: false });
+        else res.send({ data, status: true });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "มีบางอย่างผิดพลาด",
+          status: false,
+        });
+      });
+  } catch (error) {
+    res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
+  }
+};
+
+exports.findByIdCutAround = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    PreOrders.find({
+      po_cutaround_id: id,
+    })
+      .then((data) => {
+        if (!data)
+          res
+            .status(404)
+            .send({ message: "ไม่สามารถหารายงานนี้ได้", status: false });
+        else res.send({ data, status: true });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "มีบางอย่างผิดพลาด",
+          status: false,
+        });
+      });
+  } catch (error) {
+    res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
+  }
+};

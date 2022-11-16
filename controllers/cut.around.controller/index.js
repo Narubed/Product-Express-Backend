@@ -109,7 +109,7 @@ exports.update = async (req, res) => {
   }
 };
 exports.create = async (req, res) => {
-  console.log("สร้าง");
+  console.log("สร้าง", req.body);
   try {
     const { error } = validate(req.body);
     if (error)
@@ -120,10 +120,11 @@ exports.create = async (req, res) => {
     const result = await new CutAround({
       ...req.body,
     }).save();
+    console.log(result._id);
     res.status(201).send({
       message: "เพิ่มข้อมูลสำเร็จ",
       status: true,
-      CutAround: result,
+      CutAround: result._id,
     });
   } catch (error) {
     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });

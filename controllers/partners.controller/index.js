@@ -166,3 +166,34 @@ exports.create = async (req, res) => {
     res.status(500).send({ message: "มีบางอย่างผิดพลาด", status: false });
   }
 };
+
+exports.findMe = async (req, res) => {
+  const { decoded } = req;
+  try {
+    Partners.findOne({ _id: decoded._id })
+      .then((data) => {
+        if (!data) {
+          res
+            .status(404)
+            .send({ message: "ไม่สามารถหาผู้ใช้งานนี้ได้", status: false });
+        } else {
+          const newPartner = {
+            partner_name: data.partner_name,
+            partner_email: data.partner_email,
+          };
+          res.status(201).send({ user: newPartner, status: true });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "มีบางอย่างผิดพลาด",
+          status: false,
+        });
+      });
+  } catch (error) {
+    res.status(500).send({
+      message: "มีบางอย่างผิดพลาด",
+      status: false,
+    });
+  }
+};

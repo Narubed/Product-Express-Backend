@@ -20,15 +20,16 @@ exports.update = async (req, res) => {
   try {
     let upload = multer({ storage: storeage }).single("po_silp");
     upload(req, res, async function (err) {
-      console.log(req.file);
       console.log(req.body);
       if (!req.file) {
-        PreOrders.findByIdAndUpdate(
+        console.log("ไม่มีไฟล์", id);
+        await PreOrders.findByIdAndUpdate(
           id,
           { ...req.body },
           { useFindAndModify: false }
         )
           .then((data) => {
+            console.log(data);
             if (!data) {
               res.status(404).send({
                 message: `ไม่สามารถเเก้ไขข้อมูลนี้ได้`,

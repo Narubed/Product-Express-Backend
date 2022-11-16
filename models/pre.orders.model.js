@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const PreOrdersSchema = new mongoose.Schema({
-  po_member_id: { type: String, required: false, default: "ไม่มี" }, //รูป
+  po_member_id: { type: String, required: false, default: "ไม่มี" }, 
   po_member_address: { type: String, required: false, default: "ไม่มี" },
   po_number: { type: String, require: false, default: "ไม่มี" },
   po_partner_id: { type: String, require: true },
