@@ -123,7 +123,6 @@ exports.findByIdMembers = async (req, res) => {
 exports.findByIdPartner = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
     PreOrders.find({
       po_partner_id: id,
     })

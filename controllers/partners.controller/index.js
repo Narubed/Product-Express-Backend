@@ -178,6 +178,7 @@ exports.findMe = async (req, res) => {
             .send({ message: "ไม่สามารถหาผู้ใช้งานนี้ได้", status: false });
         } else {
           const newPartner = {
+            _id: data._id,
             partner_name: data.partner_name,
             partner_email: data.partner_email,
           };
